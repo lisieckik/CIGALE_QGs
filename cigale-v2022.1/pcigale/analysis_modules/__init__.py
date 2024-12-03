@@ -10,7 +10,7 @@ from pcigale.utils.console import console, INFO
 def buildSFRChange(nLevels, nModels):
     """Building SFRChange forder inside directory out
        Files containing t-student's change will be stored there"""
-    if os.path.exists('out/SFRChange'):pass
+    if os.path.exists('out/SFHs'):pass
     else:
         try:
             os.mkdir('out/SFHs')
