@@ -1,12 +1,13 @@
 from datetime import datetime
 from importlib import import_module
 from pathlib import Path
-import shutil
+import shutil, os
 from scipy.stats import t as tstudent
+from numpy import save
 
 from pcigale.utils.console import console, INFO
 
-def buildSFRChange():
+def buildSFRChange(nLevels, nModels):
     """Building SFRChange forder inside directory out
        Files containing t-student's change will be stored there"""
     if os.path.exists('out/SFRChange'):pass
@@ -15,11 +16,12 @@ def buildSFRChange():
             os.mkdir('out/SFHs')
             os.mkdir('out/SFHs/RandomChange')
 
-            for nM in configuration['sed_modules_params']['sfhnonparam']['nModels']:
-                for nL in configuration['sed_modules_params']['sfhnonparam']['nLevels']:
+            for nM in nModels:
+                for nL in nLevels:
                     sfrChange = tstudent.rvs(2, size=nL + 1)
-                    np.save('out/SFHs/SFRchange/%i_%i.npy' % (nM, nL), sfrChange, allow_pickle=True)
-        except:
+                    save('out/SFHs/RandomChange/%i_%i.npy' % (nM, nL), sfrChange, allow_pickle=True)
+        except Exception as err:
+            print(err)
             print('checking or config with SFHNonParam')
 
 class AnalysisModule:
@@ -61,7 +63,7 @@ class AnalysisModule:
         """
         raise NotImplementedError()
 
-    def prepare_dirs(self, nonParam = False):
+    def prepare_dirs(self, nonParam = False, nL = 0, nM = 0):
         # Create a new out directory and move existing one if needed
         out = Path('out')
         if out.is_dir():
@@ -73,7 +75,7 @@ class AnalysisModule:
         shutil.copy('pcigale.ini', out)
         shutil.copy('pcigale.ini.spec', out)
         if nonParam:
-            buildSFRChange()
+            buildSFRChange(nL, nM)
 
     def process(self, configuration):
         """Process with the analysis

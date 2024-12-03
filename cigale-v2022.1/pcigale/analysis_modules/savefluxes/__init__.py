@@ -110,7 +110,9 @@ class SaveFluxes(AnalysisModule):
 
         # Rename the output directory if it exists
         if conf['sed_modules'][0] == 'sfhnonparam':
-            self.prepare_dirs(nonParam=True)
+            self.prepare_dirs(nonParam=True,
+                              nL = conf['sed_modules_params']['sfhnonparam']['nLevels'],
+                              nM = conf['sed_modules_params']['sfhnonparam']['nModels'])
         else:
             self.prepare_dirs()
 
