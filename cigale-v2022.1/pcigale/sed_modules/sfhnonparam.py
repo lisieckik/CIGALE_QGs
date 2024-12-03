@@ -91,7 +91,7 @@ class SFHNonParam(SedModule):
         try:
             # If the SFH was calculated before, use the same one
             self.sfr = np.load('out/SFHs/SFH_%i_%i_%i_%i.npy'%(self.nModel, self.nLevels, self.lastBin,self.age_form))
-        except:
+        except Exception as err:
             # Else build a new one, but save it later for further analysis.
             # It can slow down small batches, but extremely useful for big fitting
 
@@ -101,8 +101,8 @@ class SFHNonParam(SedModule):
 
             # Open the file contaning the changes (if its check/config take all zeros)
             try:
-                sfrChange = np.load('out/SFHs/SFRchange/%i_%i.npy' % (self.nModel, self.nLevels))
-            except:
+                sfrChange = np.load('out/SFHs/RandomChange/%i_%i.npy' % (self.nModel, self.nLevels))
+            except Exception as err2:
                 sfrChange = np.zeros([self.nLevels + 1])
 
             # Prepare SFR table
