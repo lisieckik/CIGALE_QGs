@@ -1,7 +1,4 @@
 import os
-
-import numpy as np
-
 # Set environment variables to disable multithreading as users will probably
 # want to set the number of cores to the max of their computer.
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -14,8 +11,9 @@ import argparse
 import datetime as dt
 import multiprocessing as mp
 from pathlib import Path
-import sys, os
+import sys
 import time
+import numpy as np
 
 from .session.configuration import Configuration
 from .analysis_modules import get_module
@@ -23,6 +21,7 @@ from pcigale.utils.info import Info
 from pcigale.utils.console import console, INFO
 
 from pcigale.version import __version__
+
 
 def init(config):
     """Create a blank configuration file."""
@@ -74,6 +73,9 @@ def run(config):
     if configuration['sed_modules'][0] == 'sfhnonparam':
         configuration['sed_modules_params']['sfhnonparam']['nModels'] = (
             list(np.arange(configuration['sed_modules_params']['sfhnonparam']['nModels'][0])+1))
+
+
+
 
     if configuration:
         info = Info(config.configuration)

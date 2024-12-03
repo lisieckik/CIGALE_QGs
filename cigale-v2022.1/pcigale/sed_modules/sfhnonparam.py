@@ -10,7 +10,6 @@ in Ciesla et al. (2017).
 """
 
 import numpy as np
-from scipy.stats import t as tstudent
 from . import SedModule
 import os
 
@@ -19,16 +18,6 @@ import os
 #     result = inspect.getouterframes(inspect.currentframe(), 2)
 #     result = str(result[1][1]).split('/sed_modules')[0]
 #     return result
-
-def buildSFRChange():
-    """Building SFRChange forder inside directory out
-       Files containing t-student's change will be stored there"""
-    if os.path.exists('out/SFRChange'):pass
-    else:
-        try:
-            os.mkdir('out/SFRChange')
-        except:
-            print('checking or config with SFHNonParam')
 
 __category__ = "SFH"
 
@@ -89,42 +78,43 @@ class SFHNonParam(SedModule):
         self.age_form = int(self.parameters["age_form"])
         self.nLevels = int(self.parameters["nLevels"])
         self.lastBin = int(self.parameters["lastBin"])
+        self.nModel = int(self.parameters["nModels"])
         sfr_A = float(self.parameters["sfr_A"])
+
+
         if isinstance(self.parameters["normalise"], str):
             normalise = self.parameters["normalise"].lower() == 'true'
         else:
             normalise = bool(self.parameters["normalise"])
 
 
-
         try:
-            self.sfr = np.loadtxt('out/SFRChange/sfhChange_%i_%i_%i.txt'%(self.nLevels,int(self.parameters["nModels"]), self.age_form))
+            # If the SFH was calculated before, use the same one
+            self.sfr = np.load('out/SFHs/SFH_%i_%i_%i_%i.npy'%(self.nModel, self.nLevels, self.lastBin,self.age_form))
         except:
-            tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form), self.nLevels)[::-1]
+            # Else build a new one, but save it later for further analysis.
+            # It can slow down small batches, but extremely useful for big fitting
+
+            # start with finding when SFR will change
+            tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form), self.nLevels).astype(int)[::-1]
             tBin = np.append(tBin, [0])
-            buildSFRChange()
-            sfrChange = tstudent.rvs(2, size=len(tBin))
+
+            # Open the file contaning the changes (if its check/config take all zeros)
             try:
-                outFile = open('out/SFRChange/sfhChange_%i_%i.txt' % (self.nLevels, int(self.parameters["nModels"])),
-                               'w')
-                for i in sfrChange:
-                    outFile.write('%e\n' % i)
-                outFile.close()
+                sfrChange = np.load('out/SFHs/SFRchange/%i_%i.npy' % (self.nModel, self.nLevels))
             except:
-                print('checking or config with SFHNonParam')
+                sfrChange = np.zeros([self.nLevels + 1])
 
-            self.sfr = [1]
-            n = 0
-            for i in np.arange(self.age_form)[::-1]:
-                if i>=tBin[n]:
-                    self.sfr.append(self.sfr[-1])
-                else:
-                    newSFR = self.sfr[-1] / 10 ** sfrChange[n]
-                    self.sfr.append(newSFR)
-                    n+=1
-            np.savetxt('out/SFRChange/sfhChange_%i_%i_%i.txt'%(self.nLevels,int(self.parameters["nModels"]), self.age_form), self.sfr)
+            # Prepare SFR table
+            self.sfr = np.zeros([self.age_form + 1]) + 1
+            for change in range(len(sfrChange) - 1):
+                self.sfr[tBin[change + 1]:tBin[change]] = self.sfr[tBin[change]] / 10 ** sfrChange[change]
+            self.sfr = self.sfr[::-1]
 
-
+            # Save SFR table (if its check/config skip)
+            try:
+                np.save('out/SFHs/SFH_%i_%i_%i_%i.npy'%(self.nModel, self.nLevels, self.lastBin,self.age_form), self.sfr)
+            except:pass
 
 
         self.sfr_integrated = np.sum(self.sfr) * 1e6  ### Myr to Yr
