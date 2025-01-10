@@ -1,11 +1,8 @@
-"""
-Delayed tau model for star formation history with an optional burst/quench
+"""Stochastic star formation history model with tstudent distribution
 ==========================================================================
 
-This module implements a star formation history (SFH) described as a delayed
-rise of the SFR up to a maximum, followed by an exponential decrease. Optionally
-a quenching or a bursting episode can be added. It is described in more detail
-in Ciesla et al. (2017).
+This module implements a star formation history (SFH) described as a stochastic process
+where the sfr change between steps is limited by tstudent distribution
 
 """
 
@@ -22,16 +19,9 @@ import os
 __category__ = "SFH"
 
 
-class SFHNonParam(SedModule):
-    """Delayed tau model for Star Formation History with an optional burst or
-    quench.
-
-    This module sets the SED star formation history (SFH) proportional to time,
-    with a declining exponential parametrised with a time-scale τ. Optionally
-    a burst/quench can be added. In that case the SFR of that episode is
-    constant and parametrised as a ratio of the SFR before the beginning of the
-    episode. See Ciesla et al. (2017).
-
+class SFHStohastic_Nonparametric(SedModule):
+    """Stochastic star formation history model with tstudent distribution
+    It takes additional ~ 300 MB per 1e4 models
     """
 
     parameter_list = {
@@ -145,4 +135,4 @@ class SFHNonParam(SedModule):
         sed.add_info("sfh.lastBin", self.lastBin)
 
 # CreationModule to be returned by get_module
-Module = SFHNonParam
+Module = SFHStohastic_Nonparametric

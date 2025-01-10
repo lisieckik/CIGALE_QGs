@@ -52,9 +52,10 @@ def check(config):
 
     """This part allows to change int into list of random models"""
     configuration = config.configuration
-    if configuration['sed_modules'][0] == 'sfhnonparam':
-        configuration['sed_modules_params']['sfhnonparam']['nModels'] = (
-            list(np.arange(configuration['sed_modules_params']['sfhnonparam']['nModels'][0])+1))
+
+    if configuration['sed_modules'][0].split('_')[0] == 'sfhstohastic':
+        configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'] = (
+            list(np.arange(configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'][0])))
 
     if configuration:
         info = Info(config.configuration)
@@ -70,9 +71,9 @@ def run(config):
     """This part allows to change int into list of random models
        Used only for nonParametric sed modules"""
     configuration = config.configuration
-    if configuration['sed_modules'][0] == 'sfhnonparam':
-        configuration['sed_modules_params']['sfhnonparam']['nModels'] = (
-            list(np.arange(configuration['sed_modules_params']['sfhnonparam']['nModels'][0])+1))
+    if configuration['sed_modules'][0].split('_')[0] == 'sfhstohastic':
+        configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'] = (
+            list(np.arange(configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'][0])))
 
 
 

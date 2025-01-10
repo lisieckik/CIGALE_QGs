@@ -34,7 +34,7 @@ from ...managers.models import ModelsManager
 from ...managers.observations import ObservationsManager
 from ...managers.parameters import ParametersManager
 from pcigale.utils.console import console, INFO
-
+from ..prepareDist import prepareRandomDist
 
 class PdfAnalysis(AnalysisModule):
     """PDF analysis module"""
@@ -220,10 +220,9 @@ class PdfAnalysis(AnalysisModule):
         console.print(f"{INFO} Initialising the analysis module.")
 
         # Rename the output directory if it exists
-        if conf['sed_modules'][0] == 'sfhnonparam':
-            self.prepare_dirs(nonParam=True,
-                              nL = conf['sed_modules_params']['sfhnonparam']['nLevels'],
-                              nM = conf['sed_modules_params']['sfhnonparam']['nModels'])
+        if conf['sed_modules'][0].split('_')[0] == 'sfhstohastic':
+            self.prepare_dirs(stohastic = True)
+            prepareRandomDist(conf = conf)
         else:
             self.prepare_dirs()
 
