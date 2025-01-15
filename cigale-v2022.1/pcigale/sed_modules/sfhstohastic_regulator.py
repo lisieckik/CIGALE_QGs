@@ -139,7 +139,7 @@ class SFHStohastic_Regulator(SedModule):
         # Prepare SFR table
         self.sfr = np.zeros(tarr.shape)
         for i in range(len(centers)):
-            self.sfr[edges[i]:edges[i + 1]] = sfrValues[i]
+            self.sfr[edges[i]:edges[i + 1]] = 10**sfrValues[i]
 
         self.sfr_integrated = np.sum(self.sfr) * 1e6  ### Myr to Yr
         if normalise:
