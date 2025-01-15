@@ -33,10 +33,9 @@ def prepareRandomDist(conf):
     nModels = conf['sed_modules_params'][sfhMod]['nModels']
 
     if stohasticType == "nonparametric":
-        for nM in nModels:
-            for nL in nLevels:
-                sfrChange = tstudent.rvs(2, size=nL + 1)
-                np.save('out/SFHs/RandomChange/%i_%i.npy' % (nM, nL), sfrChange, allow_pickle=True)
+        for nL in nLevels:
+            sfrChange = tstudent.rvs(2, size=(nL + 1)*len(nModels))
+            np.save('out/SFHs/RandomChange/%i_%i.npy' % (nM, nL), sfrChange, allow_pickle=True)
     elif stohasticType == "regulator":
         rmdir('out/SFHs/RandomChange')
 

@@ -78,33 +78,22 @@ class SFHStohastic_Nonparametric(SedModule):
             normalise = bool(self.parameters["normalise"])
 
 
+        
+        # start with finding when SFR will change
+        tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form), self.nLevels).astype(int)[::-1]
+        tBin = np.append(tBin, [0])
+
+        # Open the file contaning the changes (if its check/config take all zeros)
         try:
-            # If the SFH was calculated before, use the same one
-            self.sfr = np.load('out/SFHs/SFH_%i_%i_%i_%i.npy'%(self.nModel, self.nLevels, self.lastBin,self.age_form))
-        except Exception as err:
-            # Else build a new one, but save it later for further analysis.
-            # It can slow down small batches, but extremely useful for big fitting
+            sfrChange = np.load('out/SFHs/RandomChange/%i.npy'% (self.nLevels), allow_pickle=True)[self.nModel]
+        except Exception as err2:
+            sfrChange = np.zeros([self.nLevels + 1])
 
-            # start with finding when SFR will change
-            tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form), self.nLevels).astype(int)[::-1]
-            tBin = np.append(tBin, [0])
-
-            # Open the file contaning the changes (if its check/config take all zeros)
-            try:
-                sfrChange = np.load('out/SFHs/RandomChange/%i_%i.npy' % (self.nModel, self.nLevels))
-            except Exception as err2:
-                sfrChange = np.zeros([self.nLevels + 1])
-
-            # Prepare SFR table
-            self.sfr = np.zeros([self.age_form + 1]) + 1
-            for change in range(len(sfrChange) - 1):
-                self.sfr[tBin[change + 1]:tBin[change]] = self.sfr[tBin[change]] / 10 ** sfrChange[change]
-            self.sfr = self.sfr[::-1]
-
-            # Save SFR table (if its check/config skip)
-            try:
-                np.save('out/SFHs/SFH_%i_%i_%i_%i.npy'%(self.nModel, self.nLevels, self.lastBin,self.age_form), self.sfr)
-            except:pass
+        # Prepare SFR table
+        self.sfr = np.zeros([self.age_form + 1]) + 1
+        for change in range(len(sfrChange) - 1):
+            self.sfr[tBin[change + 1]:tBin[change]] = self.sfr[tBin[change]] / 10 ** sfrChange[change]
+        self.sfr = self.sfr[::-1]
 
 
         self.sfr_integrated = np.sum(self.sfr) * 1e6  ### Myr to Yr
