@@ -20,6 +20,8 @@ def buildCovMatrix(timeArray,
 
 def get_tarr(ageMax, n_tarr = 8):
     edges = ageMax - np.append(np.linspace(ageMax, 30, n_tarr), [10,0]).astype(int)
+    if edges[1]<10:
+        edges = ageMax - np.linspace(ageMax, 0, n_tarr+2).astype(int)
     centers = []
     for i in range(len(edges) - 1):
         centers.append((edges[i + 1] - edges[i]) / 2 + edges[i])
