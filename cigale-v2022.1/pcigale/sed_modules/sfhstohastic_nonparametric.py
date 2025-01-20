@@ -89,12 +89,12 @@ class SFHStohastic_Nonparametric(SedModule):
         try:
             sfrChange = np.load('out/SFHs/RandomChange/%i.npy'% (self.nLevels), allow_pickle=True)[self.nModel]
         except Exception as err2:
-            sfrChange = np.zeros([self.nLevels + 1])
+            sfrChange = np.zeros([self.nLevels])
 
         # Prepare SFR table
         self.sfr = np.zeros([self.age_form + 1]) + 1
         for change in range(len(sfrChange) - 1):
-            self.sfr[tBin[change + 1]:tBin[change]] = self.sfr[tBin[change]] / 10 ** sfrChange[change]
+            self.sfr[tBin[change + 2]:tBin[change+1]] = self.sfr[tBin[change]] / 10 ** sfrChange[change]
         self.sfr = self.sfr[::-1]
 
 
