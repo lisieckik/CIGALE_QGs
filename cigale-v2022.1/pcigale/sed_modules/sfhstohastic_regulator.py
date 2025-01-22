@@ -131,6 +131,9 @@ class SFHStohastic_Regulator(SedModule):
             sfrValues = np.ones([self.nLevels+1])
 
 
+        if len(sfrValues) != self.nLevels + 1:
+            sfrValues = np.ones([self.nLevels+1])
+
         # start with finding when SFR will change
         centers, edges = get_tarr(self.age_form, n_tarr=self.nLevels)
         tarr = np.arange(self.age_form)

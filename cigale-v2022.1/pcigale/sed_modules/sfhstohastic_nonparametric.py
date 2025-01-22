@@ -91,6 +91,8 @@ class SFHStohastic_Nonparametric(SedModule):
         except Exception as err2:
             sfrChange = np.zeros([self.nLevels])
 
+        if len(sfrChange) != self.nLevels:
+            sfrChange = np.zeros([self.nLevels])
         # Prepare SFR table
         self.sfr = np.zeros([self.age_form + 1]) + 1
         for change in range(len(sfrChange) - 1):
