@@ -50,6 +50,13 @@ class SFHStohastic_Nonparametric(SedModule):
             "precision is 1 Myr.",
             30.
         ),
+        "scaleFactor": (
+            "cigale_list(dtype=float, minvalue=0.)",
+            "Scale factor controlls the width of the random distrivution."
+            "Tachella+21b tested values:
+            "0.3 (continuity prior) and 1 (bursty continuity prior)",
+            1.
+        ),
         "sfr_A": (
             "cigale_list(minvalue=0.)",
             "Multiplicative factor controlling the SFR if normalise is False. "
@@ -69,6 +76,7 @@ class SFHStohastic_Nonparametric(SedModule):
         self.nLevels = int(self.parameters["nLevels"])
         self.lastBin = int(self.parameters["lastBin"])
         self.nModel = int(self.parameters["nModels"])
+        self.scaleFactor = float(self.parameters['scaleFactor'])
         sfr_A = float(self.parameters["sfr_A"])
 
 
@@ -126,6 +134,7 @@ class SFHStohastic_Nonparametric(SedModule):
         sed.add_info("sfh.age_form", self.age_form, unit='Myr')
         sed.add_info("sfh.nLevels", self.nLevels)
         sed.add_info("sfh.lastBin", self.lastBin)
+        sed.add_info("sfh.scaleFactor", self.scaleFactor)
 
 # CreationModule to be returned by get_module
 Module = SFHStohastic_Nonparametric
