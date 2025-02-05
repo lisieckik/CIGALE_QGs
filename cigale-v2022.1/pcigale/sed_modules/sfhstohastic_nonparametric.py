@@ -53,7 +53,7 @@ class SFHStohastic_Nonparametric(SedModule):
         "scaleFactor": (
             "cigale_list(dtype=float, minvalue=0.)",
             "Scale factor controlls the width of the random distrivution."
-            "Tachella+21b tested values:
+            "Tachella+21b tested values:"
             "0.3 (continuity prior) and 1 (bursty continuity prior)",
             1.
         ),
