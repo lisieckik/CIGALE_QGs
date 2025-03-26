@@ -88,9 +88,10 @@ class SFHStohastic_Nonparametric(SedModule):
 
         
         # start with finding when SFR will change
-        tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form), self.nLevels).astype(int)[::-1]
+        tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form - self.age_form/7), self.nLevels-1).astype(int)[::-1]
         if abs(tBin[-2] - tBin[-1]) < self.lastBin:
-            tBin = np.logspace(np.log10(abs(tBin[-2] - tBin[-1])/2), np.log10(self.age_form), self.nLevels).astype(int)[::-1]
+            tBin = np.logspace(np.log10(abs(tBin[-2] - tBin[-1])/2), np.log10(self.age_form - self.age_form/7), self.nLevels-1).astype(int)[::-1]
+        tBin = np.append([self.age_form], tBin)
         tBin = np.append(tBin, [0])
 
         # Open the file contaning the changes (if its check/config take all zeros)
