@@ -8,7 +8,7 @@ Here, I add non-parametric starformation history in two forms:
 
 I have tested this implementation with my paper Lisiecki+ to be submitted. If you use this repository, please cite my paper, thanks!
 
-The idea behind the repository is simple. You have sucessfully installed **CIGALE v2022.1** or **CIGALE v2025.0**. Download my repo and find the corresponding version. Merge directories.
+The idea behind the repository is simple. You have sucessfully installed **CIGALE v2022.1** or **CIGALE v2025.0** (this one was not extensively tested, please report any bugs/problems). Download my repo and find the corresponding version. Merge directories.
 
 IMPORTANT note: unfortunatelly, the installation is not so easy while working with pip-installed version of CIGALE.
 Unfortunatelly, if you have such version, probably you have to rebuild the whole thing with my files within source file.
