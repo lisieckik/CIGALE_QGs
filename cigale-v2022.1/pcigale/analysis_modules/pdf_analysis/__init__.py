@@ -220,8 +220,8 @@ class PdfAnalysis(AnalysisModule):
         console.print(f"{INFO} Initialising the analysis module.")
 
         # Rename the output directory if it exists
-        if conf['sed_modules'][0].split('_')[0] == 'sfhstohastic':
-            self.prepare_dirs(stohastic = True)
+        if conf['sed_modules'][0].split('_')[0] == 'sfhstochastic':
+            self.prepare_dirs(stochastic = True)
             prepareRandomDist(conf = conf)
         else:
             self.prepare_dirs()

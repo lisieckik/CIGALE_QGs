@@ -71,7 +71,7 @@ def check(config):
     """Check the configuration."""
     if conf := config.configuration:
 
-        if conf['sed_modules'][0].split('_')[0] == 'sfhstohastic':
+        if conf['sed_modules'][0].split('_')[0] == 'sfhstochastic':
             conf['sed_modules_params'][conf['sed_modules'][0]]['nModels'] = (
                 list(np.arange(conf['sed_modules_params'][conf['sed_modules'][0]]['nModels'][0])))
 
@@ -92,7 +92,7 @@ def run(config):
     configuration = config.configuration
 
 
-    if configuration['sed_modules'][0].split('_')[0] == 'sfhstohastic':
+    if configuration['sed_modules'][0].split('_')[0] == 'sfhstochastic':
         configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'] = (
             list(np.arange(configuration['sed_modules_params'][configuration['sed_modules'][0]]['nModels'][0])))
 

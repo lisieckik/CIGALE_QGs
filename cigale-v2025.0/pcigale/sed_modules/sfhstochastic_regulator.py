@@ -9,7 +9,7 @@ Iyer+24, ApJ).
 """
 
 import numpy as np
-from . import SedModule
+from pcigale.sed_modules import SedModule
 import os
 
 
@@ -24,7 +24,7 @@ def get_tarr(ageMax, n_tarr = 8):
     centers = np.array(centers)
     return centers, edges
 
-class SFHStohastic_Regulator(SedModule):
+class SFHStochastic_Regulator(SedModule):
     """Stochastic star formation history model based on regulation model.
     See Iyer+24 and Wan+24 for details.
     sigmaReg: the amount of overall variance, unitless,
@@ -38,7 +38,7 @@ class SFHStohastic_Regulator(SedModule):
     It takes additional ~ 5 MB per 1e4 models
     """
 
-    parameter_list = {
+    parameters = {
         "age_form": (
             "cigale_list(dtype=int, minvalue=0.)",
             "Look-back time, since the galaxy formed, started forming stars in Myr. The "
@@ -119,9 +119,9 @@ class SFHStohastic_Regulator(SedModule):
             normalise = bool(self.parameters["normalise"])
 
 
-        ### Build a new SFH, using already caculated stohastic values. ###
+        ### Build a new SFH, using already caculated stochastic values. ###
 
-        # Find and open stohastic values for this model
+        # Find and open stochastic values for this model
 
         try:
             sfrValues = np.load('out/SFHs/SFH_%i_%i_%.4f_%i_%i_%.4f_%i.npy' % (
@@ -177,4 +177,4 @@ class SFHStohastic_Regulator(SedModule):
 
 
 # CreationModule to be returned by get_module
-Module = SFHStohastic_Regulator
+Module = SFHStochastic_Regulator

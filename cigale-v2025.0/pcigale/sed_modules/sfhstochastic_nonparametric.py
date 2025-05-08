@@ -7,19 +7,18 @@ where the sfr change between steps is limited by tstudent distribution
 """
 
 import numpy as np
-from . import SedModule
+from pcigale.sed_modules import SedModule
 import os
-
 
 __category__ = "SFH"
 
 
-class SFHStohastic_Nonparametric(SedModule):
+class SFHStochastic_Nonparametric(SedModule):
     """Stochastic star formation history model with tstudent distribution
     It takes additional ~ 300 MB per 1e4 models
     """
 
-    parameter_list = {
+    parameters = {
         "age_form": (
             "cigale_list(dtype=int, minvalue=0.)",
             "Look-back time, since the galaxy formed, started forming stars in Myr. The "
@@ -135,4 +134,4 @@ class SFHStohastic_Nonparametric(SedModule):
         sed.add_info("sfh.scaleFactor", self.scaleFactor)
 
 # CreationModule to be returned by get_module
-Module = SFHStohastic_Nonparametric
+Module = SFHStochastic_Nonparametric

@@ -116,8 +116,8 @@ class Configuration:
             ["* sfhfromfile (arbitrary SFH read from an input file)"] +
             ["* sfhperiodic (periodic SFH, exponential, rectangle or delayed"
              ")"] +
-            ["* sfhstohastic_nonparametric (random changes using tStudent distribution)"] +
-            ["* sfhstohastic_regulator (Physical motivated random changes, Iyer+24)"] +
+            ["* sfhstochastic_nonparametric (random changes using tStudent distribution)"] +
+            ["* sfhstochastic_regulator (Physical motivated random changes, Iyer+24)"] +
             ["SSP:"] +
             ["* bc03 (Bruzual and Charlot 2003)"] +
             ["* m2005 (Maraston 2005; note that it cannot be combined with the "

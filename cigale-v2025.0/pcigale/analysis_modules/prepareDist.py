@@ -30,11 +30,11 @@ def get_tarr(ageMax, n_tarr = 8):
 
 def prepareRandomDist(conf):
     sfhMod = conf['sed_modules'][0]
-    stohasticType = sfhMod.split('_')[1]
+    stochasticType = sfhMod.split('_')[1]
     nLevels = conf['sed_modules_params'][sfhMod]['nLevels']
     nModels = conf['sed_modules_params'][sfhMod]['nModels']
 
-    if stohasticType == "nonparametric":
+    if stochasticType == "nonparametric":
         scaleFactor = conf['sed_modules_params'][sfhMod]['scaleFactor'][0]
         if isinstance(scaleFactor, list):
             scaleFactor = scaleFactor[0]
@@ -42,7 +42,7 @@ def prepareRandomDist(conf):
             sfrChange = tstudent.rvs(2, size=(nL)*len(nModels), scale = float(scaleFactor))
             sfrChange = np.reshape(sfrChange, [len(nModels),nL])
             np.save('out/SFHs/RandomChange/%i.npy' % (nL), sfrChange, allow_pickle=True)
-    elif stohasticType == "regulator":
+    elif stochasticType == "regulator":
         rmdir('out/SFHs/RandomChange')
 
         age_form = conf['sed_modules_params'][sfhMod]['age_form']

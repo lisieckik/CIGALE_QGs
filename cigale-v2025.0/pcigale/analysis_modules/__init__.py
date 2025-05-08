@@ -8,7 +8,7 @@ from pcigale.utils.console import INFO, console
 
 def buildSFRChange():
     """Building SFRChange forder inside directory out
-       Files containing stohastic distribution will be stored there"""
+       Files containing stochastic distribution will be stored there"""
     if os.path.exists('out/SFHs'):pass
     else:
         try:
@@ -16,7 +16,7 @@ def buildSFRChange():
             os.mkdir('out/SFHs/RandomChange')
         except Exception as err:
             print(err)
-            print('checking or config with SFHStohastic')
+            print('checking or config with SFHStochastic')
 
 class AnalysisModule:
     """Abstract class, the pCigale analysis modules are based on.
@@ -58,7 +58,7 @@ class AnalysisModule:
         """
         raise NotImplementedError()
 
-    def prepare_dirs(self, stohastic = False):
+    def prepare_dirs(self, stochastic = False):
         # Create a new out directory and move existing one if needed
         out = Path('out')
         if out.is_dir():
@@ -69,7 +69,7 @@ class AnalysisModule:
         out.mkdir()
         shutil.copy('pcigale.ini', out)
         shutil.copy('pcigale.ini.spec', out)
-        if stohastic:
+        if stochastic:
             buildSFRChange()
 
     def process(self, configuration):
