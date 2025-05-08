@@ -35,7 +35,7 @@ def prepareRandomDist(conf):
     nModels = conf['sed_modules_params'][sfhMod]['nModels']
 
     if stohasticType == "nonparametric":
-        scaleFactor = conf['sed_modules_params'][sfhMod]['scaleFactor']
+        scaleFactor = conf['sed_modules_params'][sfhMod]['scaleFactor'][0]
         if isinstance(scaleFactor, list):
             scaleFactor = scaleFactor[0]
         for nL in nLevels:
