@@ -48,8 +48,8 @@ class SFHStochastic_Nonparametric(SedModule):
             "cigale_list(dtype=float, minvalue=0.)",
             "Scale factor controlls the width of the random distrivution."
             "Tachella+21b tested values:"
-            "0.3 (continuity prior) and 1 (bursty continuity prior)",
-            "Use one number only (if more given, only the first one isconsidered)",
+            "0.3 (continuity prior) and 1 (bursty continuity prior)"
+            "Use one number only (if more given, only the first one isconsidered)"
             "the results will be more consistent!",
             1.
         ),
@@ -82,7 +82,7 @@ class SFHStochastic_Nonparametric(SedModule):
             normalise = bool(self.parameters["normalise"])
 
 
-        
+
         # start with finding when SFR will change
         tBin = np.logspace(np.log10(self.lastBin), np.log10(self.age_form - self.age_form/self.nLevels), self.nLevels-1).astype(int)[::-1]
         if abs(tBin[-2] - tBin[-1]) < self.lastBin:
