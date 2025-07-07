@@ -3,7 +3,7 @@ Stochastic star formation history model based on regulation model
 ==========================================================================
 
 This module implements a star formation history (SFH) described as a stochastic process
-regulated by 5 parameters (sigmaReg, tauEq, tauIn, sigmaDyn, tauDyn, Wan+24, MNRAS;
+regulated by 5 parameters (sigmaReg, tauEq, tauFlow, sigmaDyn, tauDyn, Wan+24, MNRAS;
 Iyer+24, ApJ).
 
 """
@@ -30,7 +30,7 @@ class SFHStochastic_Regulator(SedModule):
     sigmaReg: the amount of overall variance, unitless,
     contrary to self-regulation (higher value - larger changes in the same time);
     tauEq: equilibrium timescale, Myr;
-    tauIn: inflow correlation timescale (includes 2pi factor), Myr;
+    tauFlow: inflow/outflow correlation timescale (includes 2pi factor), Myr;
     sigmaDyn: giant molecular cloud dynamical variability, unitless;
     tauDyn: dynamical lifetime of GMC, Myr.
 
@@ -69,9 +69,9 @@ class SFHStochastic_Regulator(SedModule):
             "precision is 1 Myr.",
             500.
         ),
-        "tauIn": (
+        "tauFlow": (
             "cigale_list(dtype=int, minvalue=0.)",
-            "Inflow correlation timescale, Myr,"
+            "Inflow/outflow correlation timescale, Myr,"
             "precision is 1 Myr.",
             150.
         ),
@@ -107,7 +107,7 @@ class SFHStochastic_Regulator(SedModule):
 
         self.sigmaReg = float(self.parameters["sigmaReg"])
         self.tauEq = int(self.parameters["tauEq"])
-        self.tauIn = int(self.parameters["tauIn"])
+        self.tauFlow = int(self.parameters["tauFlow"])
         self.sigmaDyn = float(self.parameters["sigmaDyn"])
         self.tauDyn = int(self.parameters["tauDyn"])
         sfr_A = float(self.parameters["sfr_A"])
@@ -126,7 +126,7 @@ class SFHStochastic_Regulator(SedModule):
         try:
             sfrValues = np.load('out/SFHs/SFH_%i_%i_%.4f_%i_%i_%.4f_%i.npy' % (
                 self.age_form, self.nLevels, self.sigmaReg, self.tauEq,
-                self.tauIn, self.sigmaDyn, self.tauDyn))[:, self.nModel]
+                self.tauFlow, self.sigmaDyn, self.tauDyn))[:, self.nModel]
         except Exception as err2:
             sfrValues = np.ones([self.nLevels+1])
 
@@ -171,7 +171,7 @@ class SFHStochastic_Regulator(SedModule):
         sed.add_info("sfh.nLevels", self.nLevels)
         sed.add_info("sfh.sigmaReg", self.sigmaReg)
         sed.add_info("sfh.tauEq", self.tauEq)
-        sed.add_info("sfh.tauIn", self.tauIn)
+        sed.add_info("sfh.tauFlow", self.tauFlow)
         sed.add_info("sfh.sigmaDyn", self.sigmaDyn)
         sed.add_info("sfh.tauDyn", self.tauDyn)
 

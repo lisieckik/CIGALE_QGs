@@ -3,17 +3,17 @@ from os import rmdir
 from scipy.stats import t as tstudent
 
 def buildCovMatrix(timeArray,
-                  sigmaReg, tauEq, tauIn, sigmaDyn, tauDyn,):
+                  sigmaReg, tauEq, tauFlow, sigmaDyn, tauDyn,):
 
     cov_matrix = np.zeros((len(timeArray), len(timeArray)))
     for i in range(len(cov_matrix)):
         for j in range(len(cov_matrix)):
             tau = np.abs(timeArray[i] - timeArray[j])
-            if tauIn == tauEq:
+            if tauFlow == tauEq:
                 c_reg = sigmaReg ** 2 * (1 + tau / tauEq) * (np.exp(-tau / tauEq))
             else:
-                c_reg = sigmaReg ** 2 / (tauIn - tauEq) * (
-                            tauIn * np.exp(-tau / tauIn) - tauEq * np.exp(-tau / tauEq))
+                c_reg = sigmaReg ** 2 / (tauFlow - tauEq) * (
+                            tauFlow * np.exp(-tau / tauFlow) - tauEq * np.exp(-tau / tauEq))
             c_gmc = sigmaDyn ** 2 * np.exp(-tau / tauDyn)
             cov_matrix[i, j] = c_reg + c_gmc
     return cov_matrix
@@ -48,7 +48,7 @@ def prepareRandomDist(conf):
         age_form = conf['sed_modules_params'][sfhMod]['age_form']
         sigmaReg = conf['sed_modules_params'][sfhMod]['sigmaReg']
         tauEq = conf['sed_modules_params'][sfhMod]['tauEq']
-        tauIn = conf['sed_modules_params'][sfhMod]['tauIn']
+        tauFlow = conf['sed_modules_params'][sfhMod]['tauFlow']
         sigmaDyn = conf['sed_modules_params'][sfhMod]['sigmaDyn']
         tauDyn = conf['sed_modules_params'][sfhMod]['tauDyn']
 
@@ -58,7 +58,7 @@ def prepareRandomDist(conf):
                 mean_array = np.zeros(len(centers))
                 for sR in sigmaReg:
                     for tE in tauEq:
-                        for tI in tauIn:
+                        for tI in tauFlow:
                             for sD in sigmaDyn:
                                 for tD in tauDyn:
                                     matrix = buildCovMatrix(centers, sR, tE, tI, sD, tD)
